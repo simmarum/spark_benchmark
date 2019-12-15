@@ -15,5 +15,6 @@ python3 -m venv $SCRIPTPATH/v-env
 . $SCRIPTPATH/v-env/bin/activate
 
 pip3 install --compile \
-pandas \
-more-itertools
+pandas==0.25.3 \
+more-itertools==8.0.2 \
+pyarrow==0.15.1

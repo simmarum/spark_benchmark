@@ -29,7 +29,7 @@ def create_file(s, v, w):
     mapping = {
         's': {
             's': 200,
-            'l': 5000,
+            'l': 1000,
         },
         'v': {
             'u': -1,
@@ -37,7 +37,7 @@ def create_file(s, v, w):
         },
         'w': {
             's': 3,  # (x3)
-            'l': 10,  # (x3)
+            'l': 9,  # (x3)
         }
     }
 
@@ -84,12 +84,16 @@ def create_file(s, v, w):
     save_path = os.path.join(
         os.path.dirname(__file__),
         'data',
-        '{}_{}_{}.csv'.format(s, v, w)
+        '{}_{}_{}.'.format(s, v, w)
     )
     os.makedirs(os.path.dirname(save_path),exist_ok=True)
-    df.to_csv(save_path,index=False)
+    df.to_csv(save_path+"csv",index=False)
+    print("Save file to: {}".format(save_path+"csv"))
+    df.to_csv(save_path+"csv.gz",index=False)
+    print("Save file to: {}".format(save_path+"csv.gz"))
+    df.to_parquet(save_path+"snappy.parquet",index=False)
+    print("Save file to: {}".format(save_path+"parquet"))
 
-    print("Save file to: {}".format(save_path))
     return save_path
 
 
