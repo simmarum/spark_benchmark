@@ -133,3 +133,6 @@ dmypy.json
 
 # v-env
 v-env/
+
+# data
+data/

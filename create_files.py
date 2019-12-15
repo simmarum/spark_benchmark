@@ -5,10 +5,11 @@ from datetime import datetime
 import os
 import base64
 import math
+import pandas as pd
 from itertools import islice
 from more_itertools import unique_everseen
 import numpy as np
-from pprint import pprint
+
 def produce_amount_keys(amount_of_keys):
     def gen_keys(_urandom=os.urandom, _encode=base64.b32encode, _randint=np.random.randint):
         while True:
@@ -59,7 +60,6 @@ def create_file(size, variety, width):
         gen_str = produce_amount_keys_random
     else:
         gen_p = produce_amount_keys(v*2)
-        print("!",gen_p)
         gen_str = random.choice
         etime = stime + v*2
         eint = v*2
@@ -77,10 +77,17 @@ def create_file(size, variety, width):
             )
         tmp_data.append(tmp_row)
 
-    print()
-    print(size, variety, width)
-    print(tmp_header)
-    pprint(tmp_data)
+    df = pd.DataFrame(tmp_data, columns = tmp_header)
+    save_path = os.path.join(
+        os.path.dirname(__file__),
+        'data',
+        '{}_{}_{}.csv'.format(size, variety, width)
+    )
+    os.makedirs(os.path.dirname(save_path),exist_ok=True)
+    df.to_csv(save_path,index=False)
+
+    print("Save file to: {}".format(save_path))
+    return save_path
 
 
 create_file('small', 'unique', 'small')
