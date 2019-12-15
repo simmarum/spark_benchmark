@@ -28,8 +28,8 @@ def create_file(s, v, w):
 
     mapping = {
         's': {
-            's': 200,
-            'l': 1000,
+            's': 500000,
+            'l': 3000000,
         },
         'v': {
             'u': -1,
@@ -57,7 +57,6 @@ def create_file(s, v, w):
     val_s = mapping['s'][s]
     val_w = mapping['w'][w]
     if val_v < 1:
-
         eint = 10000000
         gen_p = string_chars
         gen_str = produce_amount_keys_random
@@ -81,6 +80,7 @@ def create_file(s, v, w):
         tmp_data.append(tmp_row)
 
     df = pd.DataFrame(tmp_data, columns = tmp_header)
+    print("Create dataset")
     save_path = os.path.join(
         os.path.dirname(__file__),
         'data',
