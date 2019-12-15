@@ -28,16 +28,16 @@ def create_file(size, variety, width):
 
     mapping = {
         'size': {
-            'small': 2,
-            'large': 4,
+            'small': 200,
+            'large': 5000,
         },
         'variety': {
             'unique': -1,
-            'random': 1,
+            'random': 5,
         },
         'width': {
-            'small': 1,  # (x3)
-            'large': 2,  # (x3)
+            'small': 3,  # (x3)
+            'large': 10,  # (x3)
         }
     }
 
