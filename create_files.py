@@ -24,53 +24,53 @@ def produce_amount_keys(amount_of_keys):
 def produce_amount_keys_random(string_chars):
     return ''.join(random.choices(string_chars, k=20))
 
-def create_file(size, variety, width):
+def create_file(s, v, w):
 
     mapping = {
-        'size': {
-            'small': 200,
-            'large': 5000,
+        's': {
+            's': 200,
+            'l': 5000,
         },
-        'variety': {
-            'unique': -1,
-            'random': 5,
+        'v': {
+            'u': -1,
+            'r': 5,
         },
-        'width': {
-            'small': 3,  # (x3)
-            'large': 10,  # (x3)
+        'w': {
+            's': 3,  # (x3)
+            'l': 10,  # (x3)
         }
     }
 
-    if size not in mapping['size']:
-        raise ValueError("Size should be {}".format(list(mapping['size'])))
-    if variety not in mapping['variety']:
-        raise ValueError("Variety should be {}".format(list(mapping['variety'])))
-    if width not in mapping['width']:
-        raise ValueError("Width should be {}".format(list(mapping['width'])))
+    if s not in mapping['s']:
+        raise ValueError("s should be {}".format(list(mapping['s'])))
+    if v not in mapping['v']:
+        raise ValueError("v should be {}".format(list(mapping['v'])))
+    if w not in mapping['w']:
+        raise ValueError("w should be {}".format(list(mapping['w'])))
 
     string_chars = string.ascii_lowercase + string.ascii_uppercase
     date_format = "%Y-%m-%d %H:%M:%S"
     stime = time.mktime(time.strptime("2018-01-01 00:00:00", date_format))
     etime = time.mktime(time.strptime("2020-01-01 00:00:00", date_format))
 
-    v = mapping['variety'][variety]
-    s = mapping['size'][size]
-    w = mapping['width'][width]
-    if v < 1:
+    val_v = mapping['v'][v]
+    val_s = mapping['s'][s]
+    val_w = mapping['w'][w]
+    if val_v < 1:
 
         eint = 10000000
         gen_p = string_chars
         gen_str = produce_amount_keys_random
     else:
-        gen_p = produce_amount_keys(v*2)
+        gen_p = produce_amount_keys(val_v*2)
         gen_str = random.choice
-        etime = stime + v*2
-        eint = v*2
-    tmp_header = ['c{}'.format(i)for i in range(w*3)]
+        etime = stime + val_v*2
+        eint = val_v*2
+    tmp_header = ['c{}'.format(i) for i in range(val_w*3)]
     tmp_data = []
-    for i in range(s):
+    for i in range(val_s):
         tmp_row = []
-        for j in range(w):
+        for j in range(val_w):
             tmp_row.extend(
                 [
                     random.randint(1, eint),
@@ -84,7 +84,7 @@ def create_file(size, variety, width):
     save_path = os.path.join(
         os.path.dirname(__file__),
         'data',
-        '{}_{}_{}.csv'.format(size, variety, width)
+        '{}_{}_{}.csv'.format(s, v, w)
     )
     os.makedirs(os.path.dirname(save_path),exist_ok=True)
     df.to_csv(save_path,index=False)
@@ -93,11 +93,11 @@ def create_file(size, variety, width):
     return save_path
 
 
-create_file('small', 'unique', 'small')
-create_file('small', 'unique', 'large')
-create_file('large', 'unique', 'small')
-create_file('large', 'unique', 'large')
-create_file('small', 'random', 'small')
-create_file('small', 'random', 'large')
-create_file('large', 'random', 'small')
-create_file('large', 'random', 'large')
+create_file('s', 'u', 's')
+create_file('s', 'u', 'l')
+create_file('l', 'u', 's')
+create_file('l', 'u', 'l')
+create_file('s', 'r', 's')
+create_file('s', 'r', 'l')
+create_file('l', 'r', 's')
+create_file('l', 'r', 'l')
