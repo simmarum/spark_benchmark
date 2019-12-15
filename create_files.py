@@ -1,14 +1,17 @@
+import base64
+import math
+import os
 import random
 import string
 import time
 from datetime import datetime
-import os
-import base64
-import math
-import pandas as pd
 from itertools import islice
-from more_itertools import unique_everseen
+
 import numpy as np
+import pandas as pd
+
+from more_itertools import unique_everseen
+
 
 def produce_amount_keys(amount_of_keys):
     def gen_keys(_urandom=os.urandom, _encode=base64.b32encode, _randint=np.random.randint):
