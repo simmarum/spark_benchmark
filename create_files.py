@@ -1,5 +1,4 @@
 import base64
-import math
 import os
 import random
 import string
@@ -11,6 +10,21 @@ import numpy as np
 import pandas as pd
 
 from more_itertools import unique_everseen
+
+mapping = {
+    's': {
+        's': 500000,
+        'l': 3000000,
+    },
+    'v': {
+        'u': -1,
+        'r': 5,
+    },
+    'w': {
+        's': 3,  # (x3)
+        'l': 9,  # (x3)
+    }
+}
 
 
 def produce_amount_keys(amount_of_keys):
@@ -24,22 +38,17 @@ def produce_amount_keys(amount_of_keys):
 def produce_amount_keys_random(string_chars):
     return ''.join(random.choices(string_chars, k=20))
 
-def create_file(s, v, w):
 
-    mapping = {
-        's': {
-            's': 500000,
-            'l': 3000000,
-        },
-        'v': {
-            'u': -1,
-            'r': 5,
-        },
-        'w': {
-            's': 3,  # (x3)
-            'l': 9,  # (x3)
-        }
-    }
+def create_output_path(s, v, w):
+    save_path = os.path.join(
+        os.path.dirname(__file__),
+        'data',
+        '{}_{}_{}.'.format(s, v, w)
+    )
+    return save_path
+
+
+def create_file(s, v, w):
 
     if s not in mapping['s']:
         raise ValueError("s should be {}".format(list(mapping['s'])))
@@ -74,34 +83,31 @@ def create_file(s, v, w):
                 [
                     random.randint(1, eint),
                     gen_str(gen_p),
-                    datetime.utcfromtimestamp(int( stime + random.random() * (etime - stime)))
+                    datetime.utcfromtimestamp(int(stime + random.random() * (etime - stime)))
                 ]
             )
         tmp_data.append(tmp_row)
 
-    df = pd.DataFrame(tmp_data, columns = tmp_header)
+    df = pd.DataFrame(tmp_data, columns=tmp_header)
     print("Create dataset")
-    save_path = os.path.join(
-        os.path.dirname(__file__),
-        'data',
-        '{}_{}_{}.'.format(s, v, w)
-    )
-    os.makedirs(os.path.dirname(save_path),exist_ok=True)
-    df.to_csv(save_path+"csv",index=False)
+    save_path = create_output_path(s, v, w)
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    df.to_csv(save_path+"csv", index=False)
     print("Save file to: {}".format(save_path+"csv"))
-    df.to_csv(save_path+"csv.gz",index=False)
+    df.to_csv(save_path+"csv.gz", index=False)
     print("Save file to: {}".format(save_path+"csv.gz"))
-    df.to_parquet(save_path+"snappy.parquet",index=False)
+    df.to_parquet(save_path+"snappy.parquet", index=False)
     print("Save file to: {}".format(save_path+"parquet"))
 
     return save_path
 
 
-create_file('s', 'u', 's')
-create_file('s', 'u', 'l')
-create_file('l', 'u', 's')
-create_file('l', 'u', 'l')
-create_file('s', 'r', 's')
-create_file('s', 'r', 'l')
-create_file('l', 'r', 's')
-create_file('l', 'r', 'l')
+def main():
+    for ps in mapping['s']:
+        for pv in mapping['v']:
+            for pw in mapping['w']:
+                create_file(ps, pv, pw)
+
+
+if __name__ == '__main__':
+    main()
