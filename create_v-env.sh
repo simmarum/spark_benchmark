@@ -17,4 +17,5 @@ python3 -m venv $SCRIPTPATH/v-env
 pip3 install --compile \
 pandas==0.25.3 \
 more-itertools==8.0.2 \
-pyarrow==0.15.1
+pyarrow==0.15.1 \
+pyspark==2.4.4

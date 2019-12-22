@@ -1,6 +1,7 @@
 import time
 import sys
 from create_files import create_output_path
+from pyspark.sql import SparkSession
 
 
 def fib(n):
@@ -10,20 +11,30 @@ def fib(n):
         a, b = b, a + b
 
 
-def do_benchmark(s, v, w):
+def load_data(spark, l_path, l_format):
+    if l_format in ['csv', 'csv.gz']:
+        return spark.read.csv(l_path, header=True)
+    elif l_format in ['snappy.parquet']:
+        return spark.read.parquet(l_path)
+
+
+def do_benchmark(spark, s, v, w, l_format):
+
     load_path = create_output_path(s, v, w)
-    for i1 in range(100):
-        for i2 in range(100):
-            for i3 in range(100):
-                for i4 in range(10):
-                    x = i2*i1-i3-i4+i3*i2-i1-i4
+    load_path = '{}{}'.format(load_path, l_format)
+
+    df = load_data(spark, load_path, l_format)
+    print(load_path)
+    print(df.count())
 
 
 def main():
     ps = sys.argv[1]
     pv = sys.argv[2]
     pw = sys.argv[3]
-    do_benchmark(ps, pv, pw)
+    f = sys.argv[4]
+    spark = SparkSession.builder.appName('abc').getOrCreate()
+    do_benchmark(spark, ps, pv, pw, f)
 
 
 if __name__ == '__main__':
