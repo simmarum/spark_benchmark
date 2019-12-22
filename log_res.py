@@ -7,7 +7,7 @@ def create_log_file_path():
     log_path = os.path.join(
         os.path.dirname(__file__),
         'log',
-        '{}.csv.log'.format(tmp_name)
+        '{}.log'.format(tmp_name)
     )
     os.makedirs(os.path.dirname(log_path), exist_ok=True)
     with open(log_path, "w") as myfile:
