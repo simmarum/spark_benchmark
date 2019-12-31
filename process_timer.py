@@ -30,9 +30,9 @@ class ProcessTimer:
             pp = psutil.Process(self.p.pid)
 
             self.rb1 = psutil.disk_io_counters().read_bytes
-            cpu_percent_now = pp.cpu_percent()
+            cpu_percent_now = psutil.cpu_percent()
             time.sleep(0.1)
-            cpu_percent_now = pp.cpu_percent()
+            cpu_percent_now = psutil.cpu_percent()
 
             # obtain a list of the subprocess and all its descendants
             descendants = list(pp.children(recursive=True))
@@ -45,7 +45,7 @@ class ProcessTimer:
                 try:
                     mem_info = descendant.memory_info()
                     rss_memory += mem_info[0]
-                except psutil.NoSuchProcess:
+                except (psutil.NoSuchProcess, psutil.AccessDenied):
                     # sometimes a subprocess descendant will have terminated between the time
                     # we obtain a list of descendants, and the time we actually poll this
                     # descendant's memory usage.

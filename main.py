@@ -20,11 +20,11 @@ def do_ben(avg_st):
     print("###### BENCHMARK ######")
     log_file_path, tid = create_log_file_path()
     b_file_path = get_benchmark_file_path()
-    for ps in mapping['s']:
-        for pv in mapping['v']:
-            for pw in mapping['w']:
-                for l_format in ['csv', 'csv.gz', 'snappy.parquet']:
-                    for pn in range(1):
+    for pn in range(4):
+        for ps in mapping['s']:
+            for pv in mapping['v']:
+                for pw in mapping['w']:
+                    for l_format in ['csv', 'csv.gz', 'snappy.parquet']:
                         ptimer = ProcessTimer(['python3', b_file_path, ps, pv, pw, l_format])
                         tmp_data = []
                         try:
@@ -38,10 +38,10 @@ def do_ben(avg_st):
                             ptimer.close()
 
                         append_to_log_file(log_file_path, tid, ps, pv, pw, l_format, pn, ptimer, avg_st)
-                        print("@@", ptimer.cpu_percent_list)
 
 
 def get_startup_time(n):
+    print("###### PREPARE ######")
     b_file_path = get_benchmark_file_path()
     tmp_data = []
     for pn in range(n):

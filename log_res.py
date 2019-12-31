@@ -21,6 +21,7 @@ def create_log_file_path():
             "time",
             "cpu",
             "memory",
+            "read_bytes",
         ]
         myfile.write('\t'.join(tmp_row))
         myfile.write('\n')

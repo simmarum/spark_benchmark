@@ -19,24 +19,25 @@ def do_benchmark(spark, s, v, w, l_format):
 
     df = load_data(spark, load_path, l_format)
     print(load_path)
-    t_distinct_1_3(df)
-    t_self_join(df)
+    df.printSchema()
+    # t_distinct_1_3(df)
+    # t_self_join(df)
 
 
 def t_distinct_1_3(df):
     c = df.schema.names
     c_l = int(len(c) / 3)
     c_l = c_l if c_l > 0 else 1
-    c_new = random.choices(c, k=c_l)
+    c_new = random.sample(c, c_l)
     df.select(c_new).distinct().show()
 
 
 def t_self_join(df):
     c = df.schema.names
-    c_l = int(len(c) / 2)
+    c_l = int(len(c) / 3)
     c_l = c_l if c_l > 0 else 1
-    c_new_l = random.choices(c, k=c_l)
-    c_new_r = random.choices(c, k=c_l)
+    c_new_l = random.sample(c, c_l)
+    c_new_r = random.sample(c, c_l)
 
     c_new_l = list(set(c_new_l).union(set([c[0]])))
     c_new_r = list(set(c_new_r).union(set([c[0]])))
@@ -49,6 +50,7 @@ def t_self_join(df):
             .alias("r"),
             c[0]
         )\
+        .sort(c[0])\
         .show()
 
 
@@ -67,8 +69,10 @@ def main():
     pv = sys.argv[2]
     pw = sys.argv[3]
     f = sys.argv[4]
-    spark = SparkSession.builder.appName('abc').getOrCreate()
-    print("$$", ps, pv, pw, f)
+    spark = SparkSession\
+        .builder\
+        .appName('abc')\
+        .getOrCreate()
     if f != '0':
         do_benchmark(spark, ps, pv, pw, f)
 
