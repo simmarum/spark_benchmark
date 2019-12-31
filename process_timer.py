@@ -17,6 +17,8 @@ class ProcessTimer:
         self.t0 = time.time()
         self.p = subprocess.Popen(self.command, shell=False)
         self.execution_state = True
+        self.rb1 = None
+        self.rb0 = psutil.disk_io_counters().read_bytes
 
     def poll(self):
         if not self.check_execution_state():
@@ -27,6 +29,7 @@ class ProcessTimer:
         try:
             pp = psutil.Process(self.p.pid)
 
+            self.rb1 = psutil.disk_io_counters().read_bytes
             cpu_percent_now = pp.cpu_percent()
             time.sleep(0.1)
             cpu_percent_now = pp.cpu_percent()
