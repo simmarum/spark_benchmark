@@ -16,7 +16,8 @@ def get_benchmark_file_path():
     return file_path
 
 
-def main():
+def do_ben():
+    print("###### BENCHMARK ######")
     log_file_path, tid = create_log_file_path()
     b_file_path = get_benchmark_file_path()
     for ps in mapping['s']:
@@ -24,7 +25,6 @@ def main():
             for pw in mapping['w']:
                 for l_format in ['csv', 'csv.gz', 'snappy.parquet']:
                     for pn in range(1):
-                        print(b_file_path)
                         ptimer = ProcessTimer(['python3', b_file_path, ps, pv, pw, l_format])
                         tmp_data = []
                         try:
@@ -38,11 +38,10 @@ def main():
                             ptimer.close()
 
                         append_to_log_file(log_file_path, tid, ps, pv, pw, l_format, pn, ptimer)
-                        print('\t', 'return code:', ptimer.p.returncode)
-                        print('\t', 'time:', ptimer.t1 - ptimer.t0)
-                        print('\t', 'cpu_percent:', len(ptimer.cpu_percent_list), ptimer.cpu_percent_list)
-                        print('\t', 'rss_memory:', len(ptimer.rss_memory_list), ptimer.rss_memory_list)
-                        print('\t', 'times:', len(ptimer.time_list), ptimer.time_list)
+
+
+def main():
+    benchmark()
 
 
 if __name__ == '__main__':
