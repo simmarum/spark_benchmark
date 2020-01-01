@@ -20,7 +20,7 @@ def do_ben(avg_st):
     print("###### BENCHMARK ######")
     log_file_path, tid = create_log_file_path()
     b_file_path = get_benchmark_file_path()
-    for pn in range(4):
+    for pn in range(10):
         for ps in mapping['s']:
             for pv in mapping['v']:
                 for pw in mapping['w']:
