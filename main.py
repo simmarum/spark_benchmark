@@ -4,7 +4,7 @@ import psutil
 import os
 import time
 from process_timer import ProcessTimer
-from log_res import create_log_file_path, append_to_log_file
+from save_res import create_res_file_path, append_to_res_file
 
 
 def get_benchmark_file_path():
@@ -18,7 +18,7 @@ def get_benchmark_file_path():
 
 def do_ben(avg_st):
     print("###### BENCHMARK ######")
-    log_file_path, tid = create_log_file_path()
+    res_file_path, tid = create_res_file_path()
     b_file_path = get_benchmark_file_path()
     for pn in range(10):
         for ps in mapping['s']:
@@ -37,7 +37,7 @@ def do_ben(avg_st):
                                 # make sure that we don't leave the process dangling?
                             ptimer.close()
 
-                        append_to_log_file(log_file_path, tid, ps, pv, pw, l_format, pn, ptimer, avg_st)
+                        append_to_res_file(res_file_path, tid, ps, pv, pw, l_format, pn, ptimer, avg_st)
 
 
 def get_startup_time(n):

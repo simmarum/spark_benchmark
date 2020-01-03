@@ -2,15 +2,15 @@ import time
 import os
 
 
-def create_log_file_path():
+def create_res_file_path():
     tmp_name = int(time.time())
-    log_path = os.path.join(
+    res_path = os.path.join(
         os.path.dirname(__file__),
-        'log',
-        '{}.log'.format(tmp_name)
+        'res',
+        '{}.tsv'.format(tmp_name)
     )
-    os.makedirs(os.path.dirname(log_path), exist_ok=True)
-    with open(log_path, "w") as myfile:
+    os.makedirs(os.path.dirname(res_path), exist_ok=True)
+    with open(res_path, "w") as myfile:
         tmp_row = [
             "tid",
             "s",
@@ -25,10 +25,10 @@ def create_log_file_path():
         ]
         myfile.write('\t'.join(tmp_row))
         myfile.write('\n')
-    return log_path, tmp_name
+    return res_path, tmp_name
 
 
-def append_to_log_file(log_path, tid, s, v, w, l_format, n, ptimer, avg_st):
+def append_to_res_file(res_path, tid, s, v, w, l_format, n, ptimer, avg_st):
     ci = next(x[0] for x in enumerate(ptimer.time_list) if x[1] > avg_st)
 
     n_time = (ptimer.t1 - ptimer.t0) - avg_st
@@ -39,7 +39,7 @@ def append_to_log_file(log_path, tid, s, v, w, l_format, n, ptimer, avg_st):
     tmp_mem_list = ptimer.rss_memory_list[ci:]
     n_mem = max(tmp_mem_list)
 
-    with open(log_path, "a") as myfile:
+    with open(res_path, "a") as myfile:
         tmp_row = [
             "{0:d}".format(tid),
             "{0}".format(s),
